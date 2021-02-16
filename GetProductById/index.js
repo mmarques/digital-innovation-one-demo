@@ -15,7 +15,10 @@ module.exports = async function (context, req) {
   const { client: MongoClient, closeConnectionFn } = await createMongoClient();
   const Products = MongoClient.collection('products');
   const body = await Products.findOne({ _id: ObjectID(id) });
+  const status = body === null ? 204 : 200
+
+  console.log(`GetProductsById done with status ${status}`)
 
   closeConnectionFn();
-  context.res = { status: 200, body };
+  context.res = { status, body };
 };
